@@ -13,7 +13,7 @@ let router = require('./app/routers/router.js');
 
 // Configuración de CORS
 const cors = require('cors');
-const allowedOrigins = ['http://localhost:3000']; 
+const allowedOrigins = ['http://localhost:3000, "https://proyectofront-2.onrender.com"']; 
 app.use(cors({
   origin: function (origin, callback) {
     if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
