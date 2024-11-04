@@ -54,8 +54,8 @@ exports.getProyectoById = (req, res) => {
         .then(proyecto => {
             if (proyecto) {
                 res.status(200).json({
-                    message: "Proyecto obtenido con éxito con ID = " + proyectoId,
-                    proyecto: proyecto
+                    message: "Se obtuvo con éxito el proyecto con id = " + proyectoId,
+                    proyecto: proyecto,
                 });
             } else {
                 res.status(404).json({
@@ -65,12 +65,15 @@ exports.getProyectoById = (req, res) => {
             }
         })
         .catch(error => {
+            console.log(error);
             res.status(500).json({
                 message: "Error!",
-                error: error.message
+                error: error
             });
         });
 }
+
+
 
 // Actualizar un proyecto por su ID
 exports.updateById = async (req, res) => {
