@@ -1,43 +1,21 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
-var bodyParser = require('body-parser');
-const db = require('./app/config/db.config.js');
-
-// Sincronizar la base de datos
-db.sequelize.sync({force: false}).then(() => {
-  console.log('Drop and Resync with { force: true }');
-});
-
-// Importar el enrutador
-let router = require('./app/routers/router.js');
 
 // Configuración de CORS
-const cors = require('cors');
-const allowedOrigins = ['http://localhost:3000','https://proyectofront-2.onrender.com']; 
+const allowedOrigins = ['https://proyectofront-2.onrender.com'];
+
 app.use(cors({
   origin: function (origin, callback) {
-    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+    if (allowedOrigins.includes(origin) || !origin) {
       callback(null, true);
     } else {
-
-      callback(new Error('Not allowed by CORS'));
+      callback(new Error('No permitido por CORS'));
     }
-  }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,  // Si es necesario para autenticación
 }));
 
-// Middleware para parsear JSON
-app.use(bodyParser.json());
-app.use('/', router);
-
-// Ruta para comprobar si el servidor está en funcionamiento
-app.get("/", (req, res) => {
-  res.json({message: "HOLA I AM LIVE!!"});
-});
-
-// Crear el servidor
-const PORT = process.env.PORT || 8080;
-const server = app.listen(PORT, '0.0.0.0', function () {
-  let host = server.address().address;
-  let port = server.address().port;
-  console.log("App listening at http://%s:%s", host, port);
-});
+// Resto de la configuración del servidor
